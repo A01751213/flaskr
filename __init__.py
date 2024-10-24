@@ -56,11 +56,7 @@ def create_app(test_config=None):
                 'link': link
             })
 
-            # Mostrar los resultados
-            for game in games:
-                print(f"Título: {game['title']}")
-                print(f"Link: {game['link']}\n")
-
+    
         # Scrape Ignacio
         URL = "https://www.espinof.com/listas/mejores-peliculas-netflix-2024"
         page = requests.get(URL)
