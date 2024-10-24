@@ -8,8 +8,22 @@
   <form method="post">
     <label for="username">Username</label>
     <input name="username" id="username" required>
+
     <label for="password">Password</label>
     <input type="password" name="password" id="password" required>
+
+    <!-- Opciones de suscripción, ahora como checkboxes -->
+    <h3>Select your subscriptions:</h3>
+    <label>
+      <input type="checkbox" name="subscription" value="videojuegos"> Videojuegos
+    </label><br>
+    <label>
+      <input type="checkbox" name="subscription" value="peliculas"> Películas
+    </label><br>
+    <label>
+      <input type="checkbox" name="subscription" value="comics"> Cómics
+    </label><br>
+
     <input type="submit" value="Register">
   </form>
 {% endblock %}

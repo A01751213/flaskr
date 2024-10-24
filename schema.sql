@@ -4,7 +4,8 @@ DROP TABLE IF EXISTS post;
 CREATE TABLE user (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   username TEXT UNIQUE NOT NULL,
-  password TEXT NOT NULL
+  password TEXT NOT NULL,
+  subscription TEXT -- Ahora permite almacenar múltiples suscripciones como una lista separada por comas
 );
 
 CREATE TABLE post (

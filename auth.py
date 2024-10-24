@@ -10,10 +10,12 @@ from flaskr.db import get_db # type: ignore
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 @bp.route('/register', methods=('GET', 'POST'))
+@bp.route('/register', methods=('GET', 'POST'))
 def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        subscriptions = request.form.getlist('subscription')  # Obtener todas las suscripciones seleccionadas
         db = get_db()
         error = None
 
@@ -22,11 +24,14 @@ def register():
         elif not password:
             error = 'Password is required.'
 
+        # Convertir la lista de suscripciones en una cadena separada por comas
+        subscription_str = ','.join(subscriptions) if subscriptions else ''
+
         if error is None:
             try:
                 db.execute(
-                    "INSERT INTO user (username, password) VALUES (?, ?)",
-                    (username, generate_password_hash(password)),
+                    "INSERT INTO user (username, password, subscription) VALUES (?, ?, ?)",
+                    (username, generate_password_hash(password), subscription_str),
                 )
                 db.commit()
             except db.IntegrityError:
@@ -37,6 +42,7 @@ def register():
         flash(error)
 
     return render_template('auth/register.html')
+
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
