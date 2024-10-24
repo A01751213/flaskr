@@ -1,21 +1,64 @@
+<!-- templates/index.html -->
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>Lista de Videojuegos</h1>
+  <h1>Lista de Videojuegos, Películas y Cómics</h1>
 {% endblock %}
 
 {% block content %}
-  {% if games %}
-    <ul class="game-list">
-      {% for game in games %}
-        <li class="game-item">
-          <h2>{{ game.title }}</h2>
-          <p><strong>Plataformas:</strong> {{ game.platforms }}</p>
-          <a href="{{ game.link }}" target="_blank">Ver más</a>
-        </li>
-      {% endfor %}
-    </ul>
+  {% if games or movies or comics %}
+    <div class="columns">
+      <div class="column">
+        <h2>Videojuegos</h2>
+        {% if games %}
+          <ul class="game-list">
+            {% for game in games %}
+              <li class="game-item">
+                <h3>{{ game.title }}</h3>
+                <p><strong>Plataformas:</strong> {{ game.platforms }}</p>
+                <a href="{{ game.link }}" target="_blank">Ver más</a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>No se encontraron juegos.</p>
+        {% endif %}
+      </div>
+
+      <div class="column">
+        <h2>Películas</h2>
+        {% if movies %}
+          <ul class="movie-list">
+            {% for movie in movies %}
+              <li class="movie-item">
+                <h3>{{ movie.title }}</h3>
+                <a href="{{ movie.link }}" target="_blank">Ver más</a>
+                <p><strong>Fecha:</strong> {{ movie.date }}</p>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>No se encontraron películas.</p>
+        {% endif %}
+      </div>
+
+      <div class="column">
+        <h2>Cómics</h2>
+        {% if comics %}
+          <ul class="comic-list">
+            {% for comic in comics %}
+              <li class="comic-item">
+                <h3>{{ comic.title }}</h3>
+                <a href="{{ comic.link }}" target="_blank">Leer cómic</a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>No se encontraron cómics.</p>
+        {% endif %}
+      </div>
+    </div>
   {% else %}
-    <p>No se encontraron juegos.</p>
+    <p>No se encontraron juegos, películas ni cómics.</p>
   {% endif %}
 {% endblock %}

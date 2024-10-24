@@ -24,3 +24,24 @@ nav ul li a, nav ul li span, header .action { display: block; padding: 0.5rem; }
 .content textarea { min-height: 12em; resize: vertical; }
 input.danger { color: #cc2f2e; }
 input[type=submit] { align-self: start; min-width: 10em; }
+
+/* Nuevos estilos para columnas */
+.columns {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 0;
+}
+
+.column {
+  flex: 1; /* Cada columna ocupará el mismo espacio */
+  margin: 0 1rem; /* Espaciado entre columnas */
+  background-color: #f9f9f9; /* Fondo claro para las columnas */
+  padding: 1rem; /* Espaciado interno */
+  border-radius: 5px; /* Bordes redondeados */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.column h2 {
+  border-bottom: 1px solid #377ba8; /* Línea bajo el título de cada sección */
+  padding-bottom: 0.5rem; /* Espacio entre el título y el contenido */
+}

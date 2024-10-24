@@ -4,7 +4,6 @@ import requests
 from bs4 import BeautifulSoup
 
 def create_app(test_config=None):
-    # Crear y configurar la aplicación
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
@@ -12,37 +11,24 @@ def create_app(test_config=None):
     )
 
     if test_config is None:
-        # Cargar la configuración de la instancia, si existe, cuando no esté en pruebas
         app.config.from_pyfile('config.py', silent=True)
     else:
-        # Cargar la configuración de pruebas si se pasa
         app.config.from_mapping(test_config)
 
-    # Asegurarse de que la carpeta de instancias exista
     try:
         os.makedirs(app.instance_path)
     except OSError:
         pass
 
-
-    #Scrape Vicente
-    # Ruta que ejecuta el scraper y muestra los resultados
     @app.route('/')
     def index():
-        # Paso 1: Hacer la solicitud a la página web
+        # Scrape Vicente
         URL = "https://vandal.elespanol.com/juegos/0/videojuegos"
         page = requests.get(URL)
-
-        # Paso 2: Parsear el HTML de la página
         soup = BeautifulSoup(page.content, "html.parser")
-
-        # Paso 3: Encontrar los elementos que contienen la información
         rows = soup.find_all("tr")
 
-        # Lista de palabras clave que pueden representar plataformas de videojuegos
         platform_keywords = ["PC", "PS4", "Xbox", "Switch", "PlayStation", "Nintendo", "Steam", "Series X", "One"]
-
-        # Paso 4: Buscar y extraer la información de cada videojuego
         games = []
         for row in rows:
             title_element = row.find("a", title=True)
@@ -65,21 +51,57 @@ def create_app(test_config=None):
                     'link': f"https://vandal.elespanol.com{link}"
                 })
 
-        # Renderizar la plantilla HTML y pasar la lista de juegos
-        return render_template('blog/index.html', games=games)
+        # Scrape Ignacio
+        URL = "https://www.espinof.com/listas/mejores-peliculas-netflix-2024"
+        page = requests.get(URL)
+        soup = BeautifulSoup(page.content, "html.parser")
+        headlines_div = soup.find("div", id="headlines")
+        post_items = headlines_div.find_all("li")
 
-    # Simple route to say hello
-    @app.route('/hello')
+        movies = []
+        for post in post_items:
+            title_element = post.find("a")
+            if title_element:
+                title = title_element.text.strip()
+                link = title_element['href']
+                if not link.startswith("http"):
+                    link = f"https://www.espinof.com{link}"
 
-    #Scrape Eduardo
+                date_element = post.find("time")
+                date = date_element['datetime'] if date_element else "No disponible"
 
+                movies.append({
+                    'title': title,
+                    'link': link,
+                    'date': date
+                })
+        #Scrape EDU
+        # Paso 1: Hacer la solicitud a la página web
+        URL = "https://365comicsxyear.blogspot.com/2022/06/"
+        page = requests.get(URL)
 
-    #Scrape Ignacio
+        # Paso 2: Parsear el HTML de la página
+        soup = BeautifulSoup(page.content, "html.parser")
+        results = soup.find(id="Blog1")
 
+        # Buscar todas las entradas del blog
+        posts = results.find_all("h3", class_="post-title entry-title")
 
-     
-    def hello():
-        return 'Hello, World!'
+        # Lista para almacenar la información de los cómics
+        comics = []
+
+        # Paso 4: Extraer y mostrar el título y la URL de cada entrada
+        for post in posts:
+            title = post.get_text(strip=True)
+            link = post.find("a")["href"]
+
+            comics.append({
+                'title': title,
+                'link': link
+            })
+
+        # Renderizar la plantilla HTML y pasar las listas de juegos y películas
+        return render_template('blog/index.html', games=games, movies=movies, comics=comics)
 
     from . import db
     db.init_app(app)
