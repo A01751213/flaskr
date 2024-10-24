@@ -24,6 +24,8 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+
+    #Scrape Vicente
     # Ruta que ejecuta el scraper y muestra los resultados
     @app.route('/')
     def index():
@@ -68,6 +70,14 @@ def create_app(test_config=None):
 
     # Simple route to say hello
     @app.route('/hello')
+
+    #Scrape Eduardo
+
+
+    #Scrape Ignacio
+
+
+     
     def hello():
         return 'Hello, World!'
 
