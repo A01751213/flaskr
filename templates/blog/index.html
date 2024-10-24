@@ -12,9 +12,10 @@
         <h2>Videojuegos</h2>
         {% if games %}
           <ul class="game-list">
-            {% for game in games %}
+            {% for game in games[:5] %} <!-- Mostrar solo los primeros 5 videojuegos -->
               <li class="game-item">
                 <h3>{{ game.title }}</h3>
+                <p><strong>Plataformas:</strong> {{ game.platforms }}</p>
                 <a href="{{ game.link }}" target="_blank">Ver más</a>
               </li>
             {% endfor %}
@@ -28,7 +29,7 @@
         <h2>Películas</h2>
         {% if movies %}
           <ul class="movie-list">
-            {% for movie in movies %}
+            {% for movie in movies[:5] %} <!-- Mostrar solo las primeras 5 películas -->
               <li class="movie-item">
                 <h3>{{ movie.title }}</h3>
                 <a href="{{ movie.link }}" target="_blank">Ver más</a>
@@ -45,7 +46,7 @@
         <h2>Cómics</h2>
         {% if comics %}
           <ul class="comic-list">
-            {% for comic in comics %}
+            {% for comic in comics[:5] %} <!-- Mostrar solo los primeros 5 cómics -->
               <li class="comic-item">
                 <h3>{{ comic.title }}</h3>
                 <a href="{{ comic.link }}" target="_blank">Leer cómic</a>
